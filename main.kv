@@ -1,0 +1,66 @@
+<MainScreen>:
+
+    name: 'main'
+    btn: btn
+    toggle_label: toggle_label
+    dir_btn: dir_btn
+    dir_label: dir_label
+    slider: slider
+    stop_btn: stop_btn
+
+    FloatLayout:
+        size_hint: None, None
+
+    Button:
+        id: stop_btn
+        text: "STOP"
+        size_hint: None, None
+        size: 150, 50
+        center_x: root.width * 0.96
+        center_y: root.height * 0.975
+        on_press: root.stop()
+
+    Button:
+        id: btn
+        size_hint: None, None
+        size: 150, 150
+        center_x: root.width * 0.5
+        center_y: root.height * 0.5
+        on_press: root.on_off()
+
+    Label:
+        id: toggle_label
+        text: "OFF"
+        size_hint: None, None
+        font_size: 70
+        color: 0, 0, 1, 1
+        center_x: root.width * 0.5
+        center_y: root.height * 0.35
+
+    Button:
+        id: dir_btn
+        size_hint: None, None
+        size: 150, 150
+        center_x: root.width * 0.25
+        center_y: root.height * 0.5
+        on_press: root.toggle_dir()
+
+    Label:
+        id: dir_label
+        text: ""
+        size_hint: None, None
+        font_size: 50
+        color: 0, 0, 1, 1
+        center_x: root.width * 0.25
+        center_y: root.height * 0.35
+
+    Slider:
+        id: slider
+        text: "Speed"
+        size_hint: 1, .08
+        center_y: root.height * .15
+        color: 1, 0, 1, 1
+        min: 0
+        max: 100
+        step: 1
+        on_value: root.slide()
