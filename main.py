@@ -1,3 +1,5 @@
+import time
+
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -41,8 +43,11 @@ class MainScreen(Screen):
     dir_label = ObjectProperty(None)
     slider = ObjectProperty(None)
     stop_btn = ObjectProperty(None)
+    pos_label = ObjectProperty(None)
+    the_btn = ObjectProperty(None)
 
-    def stop(self):
+    @staticmethod
+    def stop():
         s0.stop()
 
     def on_off(self):
@@ -66,8 +71,33 @@ class MainScreen(Screen):
             s0.run(1, 300)
             self.dir_label.text = "Counter Clockwise"
 
+    def the_fn(self):
+        self.pos_label.text = "Current Position: " + str(s0.get_position_in_units())
+        s0.go_until_press(1, 1*6400)
+        time.sleep(15)
+        self.pos_label.text = "Current Position: " + str(s0.get_position_in_units())
+        time.sleep(10)
+        s0.go_until_press(1, 5*6400)
+        time.sleep(2)
+        self.pos_label.text = "Current Position: " + str(s0.get_position_in_units())
+        time.sleep(8)
+        s0.goHome()
+        time.sleep(30)
+        self.pos_label.text = "Current Position: " + str(s0.get_position_in_units())
+        s0.go_until_press(0, 8*6400)
+        time.sleep(12.5)
+        self.pos_label.text = "Current Position: " + str(s0.get_position_in_units())
+        time.sleep(10)
+        s0.goHome()
+        self.pos_label.text = "Current Position: " + str(s0.get_position_in_units())
+
+    def start_thread(self):  # This should be inside the MainScreen Class
+        Thread(target=self.the_fn).start()
+
     def slide(self):
-        if int(self.slider.value) == 1:
+        if int(self.slider.value) == 0:
+            s0.stop()
+        elif int(self.slider.value) == 1:
             s0.run(0, 1)
         elif int(self.slider.value) == 2:
             s0.run(0, 2)

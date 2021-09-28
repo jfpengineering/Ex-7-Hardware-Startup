@@ -7,6 +7,8 @@
     dir_label: dir_label
     slider: slider
     stop_btn: stop_btn
+    pos_label: pos_label
+    the_btn: the_btn
 
     FloatLayout:
         size_hint: None, None
@@ -64,3 +66,21 @@
         max: 100
         step: 1
         on_value: root.slide()
+
+    Label:
+        id: pos_label
+        text: "Current Position: "
+        size_hint: None, None
+        font_size: 50
+        color: 1, 0, 0, 1
+        center_x: root.width * 0.5
+        center_y: root.height * 0.9
+
+    Button:
+        id: the_btn
+        text: "Press Me!"
+        size_hint: None, None
+        size: 150, 150
+        center_x: root.width * 0.5
+        center_y: root.height * 0.7
+        on_press: root.start_thread()
