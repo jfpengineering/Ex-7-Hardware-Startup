@@ -18,6 +18,7 @@ import os
 from time import sleep
 import RPi.GPIO as GPIO
 from pidev.stepper import stepper
+from pidev.Cyprus_Commands import Cyprus_Commands_RPi as cyprus
 from Slush.Devices import L6470Registers
 spi = spidev.SpiDev()
 
@@ -45,10 +46,32 @@ class MainScreen(Screen):
     stop_btn = ObjectProperty(None)
     pos_label = ObjectProperty(None)
     the_btn = ObjectProperty(None)
+    switch_label = ObjectProperty(None)
 
     @staticmethod
     def stop():
         s0.stop()
+
+    def servo_move(self):
+        cyprus.initialize()
+        cyprus.setup_servo(1)
+        cyprus.set_servo_position(1,0)
+        cyprus.close()
+
+    def limit_switch(self):
+        cyprus.initialize()
+        cyprus.setup_servo(1)
+        while True:
+            if (cyprus.read_gpio() & 0b0001):  # binary bitwise AND of the value returned from read.gpio()
+                #sleep(1)
+                if (cyprus.read_gpio() & 0b0001):  # a little debounce logic
+                    self.switch_label.text = "GPIO on port P6 is HIGH"
+                    cyprus.set_servo_position(1, 0)
+            else:
+                self.switch_label.text = "GPIO on port P6 is LOW"
+                cyprus.set_servo_position(1, 1)
+                #sleep(1)
+        cyprus.close()
 
     def on_off(self):
         self.dir_label.text = ""
@@ -91,8 +114,11 @@ class MainScreen(Screen):
         s0.goHome()
         self.pos_label.text = "Current Position: " + str(s0.get_position_in_units())
 
-    def start_thread(self):  # This should be inside the MainScreen Class
+    def start_thread1(self):  # This should be inside the MainScreen Class
         Thread(target=self.the_fn).start()
+
+    def start_thread2(self):
+        Thread(target=self.limit_switch).start()
 
     def slide(self):
         if int(self.slider.value) == 0:

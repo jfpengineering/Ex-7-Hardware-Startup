@@ -9,6 +9,7 @@
     stop_btn: stop_btn
     pos_label: pos_label
     the_btn: the_btn
+    switch_label: switch_label
 
     FloatLayout:
         size_hint: None, None
@@ -83,4 +84,29 @@
         size: 150, 150
         center_x: root.width * 0.5
         center_y: root.height * 0.7
-        on_press: root.start_thread()
+        on_press: root.start_thread1()
+
+    Button:
+        text: "servo"
+        size_hint: None, None
+        size: 150, 150
+        center_x: root.width * 0.7
+        center_y: root.height * 0.7
+        on_press: root.servo_move()
+
+    Button:
+        text: "limit switch"
+        size_hint: None, None
+        size: 150, 150
+        center_x: root.width * 0.85
+        center_y: root.height * 0.7
+        on_press: root.start_thread2()
+
+    Label:
+        id: switch_label
+        text: ""
+        size_hint: None, None
+        font_size: 50
+        color: 1, 0, 0, 1
+        center_x: root.width * 0.5
+        center_y: root.height * 0.1
